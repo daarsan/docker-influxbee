@@ -19,7 +19,7 @@ RUN set -ex \
 
 # Clone the repository
 RUN echo "**** install app ****" \
-    && git clone https://github.com/daarsan/influxbee /influxbee
+    && git clone https://github.com/daarsan/influxbee /influxbee \
     && python3 -m venv /influxbee/venv \
     && /influxbee/venv/bin/pip install -U pip \
     && LIBRARY_PATH=/lib:/usr/lib /bin/sh -c "/influxbee/venv/bin/pip install --no-cache-dir -r /influxbee/requirements.txt"
