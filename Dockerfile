@@ -10,15 +10,16 @@ ENV MIRUBEE_USER=user \
     INFLUXDB_PASSWORD=root \
     REQUESTS_PER_DAY=100
 
-# Clone the repository
-RUN \
-    echo "**** install app ****" && \
-    git clone https://github.com/daarsan/influxbee /influxbee
-
 # Install build deps, then run `pip install`, then remove unneeded build deps all in a single step. Correct the path to
 # your production requirements file, if needed.
 RUN set -ex \
     && apk update \
+    && apk add --no-cache --virtual .build-deps \
+            git
+
+# Clone the repository
+RUN echo "**** install app ****" \
+    && git clone https://github.com/daarsan/influxbee /influxbee
     && python3 -m venv /influxbee/venv \
     && /influxbee/venv/bin/pip install -U pip \
     && LIBRARY_PATH=/lib:/usr/lib /bin/sh -c "/influxbee/venv/bin/pip install --no-cache-dir -r /influxbee/requirements.txt"
