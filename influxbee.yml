@@ -1,0 +1,27 @@
+version: '2'
+services:
+  influxdb:
+    container_name: influxdb
+    image: arm32v7/influxdb
+    restart: always
+    group_add:
+      - users
+    ports:
+      - 8086:8086
+      - 8083:8083
+    volumes:
+      - /opt/config/influxdb/:/var/lib/influxdb
+  influxbee:
+    container_name: influxbee
+    image: daarsan/docker-influxbee:arm32v7
+    restart: always
+    environment:
+      - MIRUBEE_USER=xxx
+      - MIRUBEE_PASSWORD=xxx
+      - INFLUXDB_HOST=influxdb
+    depends_on:
+      - influxdb
+    links:
+      - "influxdb"
+    volumes:
+      - /opt/config/influxbee/:/config
